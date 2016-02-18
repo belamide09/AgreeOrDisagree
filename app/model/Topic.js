@@ -29,9 +29,13 @@ module.exports = (function(){
 
 	X.GetTopics = function(callback){
 		Topic.findAll({
+			where: {
+
+			},
 		  order : [
 				['created','desc']
-		  ]
+		  ],
+		  limit: 10,
 		}).done(function(results,err){
 			callback({
 				error: err == 1?'Failed to get the topics':0,

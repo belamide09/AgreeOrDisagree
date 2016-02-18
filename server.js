@@ -46,9 +46,14 @@ io.on('connection',function(socket) {
 
   io.on('add_topic',function(data){
     Topic.Add({
+      topic_id: data.topic_id,
+      user_id: data.user_id,
       comment: data.comment,
-      
-    },function(){
+      created: today(),
+      created_ip: getIp(socket),
+      modified: today(),
+      modified_ip: getIp(socket)
+    },function(data){
       socket.on(socket.id).emit('ResponseAddTopic',data);
     });
   });
