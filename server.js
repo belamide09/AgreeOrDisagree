@@ -63,6 +63,7 @@ io.on('connection',function(socket) {
   });
 
   socket.on('get_comments',function(data){
+    data.User = User.Table;
     Comment.GetComments(data,function(data){
       io.to(socket.id).emit('ReturnComments',data);
     });

@@ -55,11 +55,11 @@ module.exports = (function(){
 		}
 		Topic.findAll(options).done(function(results,err){
 			callback({
-				error: err == 1?'Failed to get the topics':0,
+				error: err == 1?'Failed to retrieve the topics':0,
 				results: results
 			});
 		});
-	}
+	};
 
 	X.Add = function(data,callback){
 		Topic.create(data).then(function(result,err){
@@ -68,7 +68,7 @@ module.exports = (function(){
 				result: result
 			});
 		});
-	}
+	};
 
 	X.GetTopic = function(id,callback){
 		Topic.find({
@@ -76,7 +76,7 @@ module.exports = (function(){
 		}).done(function(result){
 			callback(result);
 		});
-	}
+	};
 
 	X.ToggleAgree = function(data,callback){
 		X.GetTopic(data.id,function(result){		
@@ -105,7 +105,7 @@ module.exports = (function(){
 				callback({error:err==1?'Topic no longer exist':0});
 			}
 		});
-	}
+	};
 
 	return X;
 })();

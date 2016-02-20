@@ -28,6 +28,7 @@ module.exports = (function(){
   X.Table = Comment;
 
   X.GetComments = function(data,callback){
+    Comment.belongsTo(data.User,{foreignKey: 'user_id'});
     var conditions = {
       topic_id: data.topic_id
     };
@@ -39,7 +40,11 @@ module.exports = (function(){
       order: [
         ['id','desc']
       ],
-      limit: 5
+      limit: 5,
+      include: [{
+        model: data.User,
+        required: true,
+      }]
     }).done(function(results,err){
       callback({
         error: err == 1?'Failed to retrieve comments':0,
@@ -55,7 +60,7 @@ module.exports = (function(){
 				result: result
 			});
   	});
-  }
+  };
 
   X.Update = function(data,callback){
   	Comment.Update(data,{
@@ -66,7 +71,7 @@ module.exports = (function(){
 				result: result
 			});
   	});
-  }
+  };
 
   X.Delete = function(id,callback){
   	Comment.destroy({
@@ -74,7 +79,7 @@ module.exports = (function(){
   	}).done(function(){
   		callback(true);
   	});
-  }
+  };
 
   return X;
 })();
