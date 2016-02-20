@@ -20,6 +20,7 @@ var Topic       = require('./app/model/Topic.js');
 var Comment     = require('./app/model/Comment.js');
 var Agree       = require('./app/model/Agree.js');
 var Disagree    = require('./app/model/Disagree.js');
+var User        = require('./app/model/User.js');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -38,13 +39,16 @@ app.use(multer({ dest: './../app/webroot/images/'+uploadFolder,
 
 io.on('connection',function(socket) {
 
-  io.on('get_topics',function(data){
-    Topic.GetTopics(function(data){
-      socket.on(socket.id).emit('ResponseAddTopic',data);
+
+  socket.on('get_topics',function(data){
+    data.User = User.Table;
+    data.Comment = Comment.Table;
+    Topic.GetTopics(data,function(data){
+      io.to(socket.id).emit('ReturnTopics',data);
     });
   });
 
-  io.on('add_topic',function(data){
+  socket.on('add_topic',function(data){
     Topic.Add({
       topic_id: data.topic_id,
       user_id: data.user_id,
@@ -54,7 +58,13 @@ io.on('connection',function(socket) {
       modified: today(),
       modified_ip: getIp(socket)
     },function(data){
-      socket.on(socket.id).emit('ResponseAddTopic',data);
+      io.to(socket.id).emit('ResponseAddTopic',data);
+    });
+  });
+
+  socket.on('get_comments',function(data){
+    Comment.GetComments(data,function(data){
+      io.to(socket.id).emit('ReturnComments',data);
     });
   });
 

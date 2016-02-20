@@ -25,6 +25,29 @@ module.exports = (function(){
 
   var X = {};
 
+  X.Table = Comment;
+
+  X.GetComments = function(data,callback){
+    var conditions = {
+      topic_id: data.topic_id
+    };
+    if(data.last_id != null){
+      conditions['id'] = {$lt: data.last_id};
+    }
+    Comment.findAll({
+      where: conditions,
+      order: [
+        ['id','desc']
+      ],
+      limit: 5
+    }).done(function(results,err){
+      callback({
+        error: err == 1?'Failed to retrieve comments':0,
+        results: results
+      });
+    })
+  };
+
   X.Add = function(data,callback){
   	Comment.create(data,function(result,err){
   		callback({
