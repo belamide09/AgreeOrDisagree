@@ -52,7 +52,7 @@ io.on('connection',function(socket) {
     Topic.Add({
       topic_id: data.topic_id,
       user_id: data.user_id,
-      comment: data.comment,
+      content: data.comment,
       created: today(),
       created_ip: getIp(socket),
       modified: today(),
@@ -62,11 +62,40 @@ io.on('connection',function(socket) {
     });
   });
 
+  socket.on('update_topic',function(data){
+    Topic.Update({
+      id: data.id,
+      content: data.content,
+      modified: today(),
+      modified_ip: getIp(socket)
+    }).function(data){
+      io.to(socket.id).emit('ResponseUpdateTopic',data);
+    });
+  });
+
   socket.on('get_comments',function(data){
     data.User = User.Table;
     Comment.GetComments(data,function(data){
       io.to(socket.id).emit('ReturnComments',data);
     });
+  });
+
+  socket.on('toggle_agree',function(data){
+    var params = {
+      topic_id: data.topic_id,
+      user_id: data.user_id,
+      created: today(),
+      created_ip: getIp()
+    };
+    if(data.status == 1){
+      Disagree.Delete(params,function(){
+        Agree.Add(params);
+      });
+    }else{
+      Agree.Delete(params,function(){
+        Disagree.Add(params);
+      });
+    }
   });
 
   var getIp = function(socket){

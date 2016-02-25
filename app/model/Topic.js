@@ -70,6 +70,21 @@ module.exports = (function(){
 		});
 	};
 
+	X.Update = function(data,callback){
+		Topic.update({
+			content: data.content,
+			modified: data.modified,
+			modified_ip: data.modified_ip
+		},{
+			where: {id:data.id}
+		}).then(function(result,err){
+			callback({
+				error: err == 1?'Failed to update topic':0,
+				result: result
+			});
+		});
+	};
+
 	X.GetTopic = function(id,callback){
 		Topic.find({
 			where: {id:id}
@@ -102,7 +117,7 @@ module.exports = (function(){
 					});
 				}
 			}else{
-				callback({error:err==1?'Topic no longer exist':0});
+				callback({error:err == 1?'Topic no longer exist':0});
 			}
 		});
 	};

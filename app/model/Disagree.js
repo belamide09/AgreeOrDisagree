@@ -25,7 +25,7 @@ module.exports = (function(){
   X.Add = function(data,callback){
     Disagree.create(data).then(function(result,err){
       callback({
-        error: err == 1 ? 'Failed to agree topic' : 0,
+        error: err == 1?'Failed to agree topic':0,
         result: result
       });
     });
@@ -37,6 +37,8 @@ module.exports = (function(){
         topic_id: data.topic_id,
         user_id: data.user_id
       }
+    }).done(function(){
+      callback();
     });
   }
 
