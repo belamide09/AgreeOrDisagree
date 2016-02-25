@@ -81,21 +81,26 @@ io.on('connection',function(socket) {
   });
 
   socket.on('toggle_agree',function(data){
-    var params = {
-      topic_id: data.topic_id,
-      user_id: data.user_id,
-      created: today(),
-      created_ip: getIp()
-    };
-    if(data.status == 1){
-      Disagree.Delete(params,function(){
+    Topic.ToggleAgree(data,function(result){
+      var params = {
+        topic_id: data.topic_id,
+        user_id: data.user_id,
+        created: today(),
+        created_ip: getIp()
+      };
+      if(data.error == 1){
+        // Send error and end method when error occur
+        io.to(socket.id).emit('ResponseToggleAgree',result);
+      }
+      if(data.agree == 1){
+        Disagree.Delete(params);
         Agree.Add(params);
-      });
-    }else{
-      Agree.Delete(params,function(){
+      }else{
+        Agree.Delete(params);
         Disagree.Add(params);
-      });
-    }
+      }
+      io.to(socket.id).emit('ResponseToggleAgree',result);
+    });
   });
 
   var getIp = function(socket){

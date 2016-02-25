@@ -77,7 +77,7 @@ module.exports = (function(){
   	Comment.destroy({
   		where: {id:id}
   	}).done(function(){
-  		callback(true);
+  		callback();
   	});
   };
 

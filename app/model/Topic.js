@@ -96,30 +96,35 @@ module.exports = (function(){
 	X.ToggleAgree = function(data,callback){
 		X.GetTopic(data.id,function(result){		
 			if(result != null){
-				var result = result.dataValues;
-				if(data.agree == 1){
-					Topic.update({agree:result.agree+1},{
-						where: { id: data.id }
-					}).done(function(result,err){
-						callback({
-							error: err == 1?'failed updating topic':0,
-							result: result
-						});
-					});
-				}else{
-					Topic.update({disagree:result.disagree+1},{
-						where: { id: data.id }
-					}).done(function(result,err){
-						callback({
-							error: err == 1?'failed updating topic':0,
-							result: result
-						});
-					});
-				}
+				ToggleAgree({result:result,callback:callback});
 			}else{
 				callback({error:err == 1?'Topic no longer exist':0});
 			}
 		});
+	};
+
+	var ToggleAgree = function(data){
+		var result = data.result.dataValues;
+		var callback = data.callback;
+		if(data.agree == 1){
+			Topic.update({agree:result.agree+1},{
+				where: { id: data.id }
+			}).done(function(result,err){
+				callback({
+					error: err == 1?'failed to agree topic':0,
+					result: result
+				});
+			});
+		}else{
+			Topic.update({disagree:result.disagree+1},{
+				where: { id: data.id }
+			}).done(function(result,err){
+				callback({
+					error: err == 1?'failed to disagree topic':0,
+					result: result
+				});
+			});
+		};
 	};
 
 	return X;
