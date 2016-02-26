@@ -27,10 +27,7 @@ module.exports = (function(){
 
 	var X = {};
 
-	X.GetTopics = function(data,callback){
-		Topic.belongsTo(data.User,{foreignKey: 'user_id'});
-    Topic.hasMany(data.Comment,{foreignKey: 'topic_id'});
-    data.Comment.belongsTo(data.User,{foreignKey: 'user_id'});
+	function GetTopicConditions = function(data){
 		var options = {
 		  order : [
 				['created','desc']
@@ -53,12 +50,17 @@ module.exports = (function(){
 		};
 		if(data.last_id != null){
 			options.where = {
-				 id: {
-		      $lt: data.last_id
-			  }
+				id: {$lt: data.last_id}
 			};
 		}
-		Topic.findAll(options).done(function(results,err){
+		return options;
+	}
+
+	X.GetTopics = function(data,callback){
+	Topic.belongsTo(data.User,{foreignKey: 'user_id'});
+    Topic.hasMany(data.Comment,{foreignKey: 'topic_id'});
+    data.Comment.belongsTo(data.User,{foreignKey: 'user_id'});
+		Topic.findAll(GetTopicConditions(data)).done(function(results,err){
 			callback({
 				error: err == 1?'Failed to retrieve the topics':0,
 				results: results

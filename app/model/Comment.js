@@ -11,10 +11,10 @@ var Comment = con.define('comments', {
     primaryKey : true,
     autoIncrement : true
   },
-  topic_id: seq.INTEGER,
-  user_id	: seq.INTEGER,
-  comment : seq.INTEGER,
-  created	: seq.STRING,
+  topic_id  : seq.INTEGER,
+  user_id   : seq.INTEGER,
+  comment   : seq.INTEGER,
+  created   : seq.STRING,
   created_ip: seq.STRING,
   modified: seq.STRING,
   modified_ip: seq.STRING,
@@ -55,10 +55,10 @@ module.exports = (function(){
 
   X.Add = function(data,callback){
   	Comment.create(data,function(result,err){
-  		callback({
-				error: err == 1?'Failed to add comment':0,
-				result: result
-			});
+      callback({
+  		  error: err == 1?'Failed to add comment':0,
+  		  result: result
+      });
   	});
   };
 

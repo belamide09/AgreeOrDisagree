@@ -13,8 +13,10 @@ var requestIp   = require('request-ip');
 var dateFormat  = require('dateformat');
 var bodyParser  = require('body-parser');
 var upload      = multer();
+var md5         = require('MD5');
 var port        = 3000;
 var uploadFolder= '';
+
 
 var Topic       = require('./app/model/Topic.js');
 var Comment     = require('./app/model/Comment.js');
@@ -27,7 +29,10 @@ app.use(bodyParser.json());
 
 app.use(multer({ dest: './../app/webroot/images/'+uploadFolder,
   rename: function (fieldname, filename) {
-    return Date.now();
+    var extension = filename.split();
+    extension = filename[filename.length-1];
+    var fileName = md5(new Date())'-'+md5(uploadFolder)+'-'socket.id+'.'+extension;
+    return fileName;
   },
   onFileUploadStart: function (file) {
     console.log(file.originalname+' is starting ...');
@@ -39,8 +44,7 @@ app.use(multer({ dest: './../app/webroot/images/'+uploadFolder,
 
 io.on('connection',function(socket) {
 
-
-  socket.on('get_topics',function(data){
+  socket.on('get_topics',function(data)
     data.User = User.Table;
     data.Comment = Comment.Table;
     Topic.GetTopics(data,function(data){
@@ -91,6 +95,7 @@ io.on('connection',function(socket) {
       if(data.error == 1){
         // Send error and end method when error occur
         io.to(socket.id).emit('ResponseToggleAgree',result);
+        return false;
       }
       if(data.agree == 1){
         Disagree.Delete(params);

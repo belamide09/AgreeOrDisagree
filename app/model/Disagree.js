@@ -11,9 +11,9 @@ var Disagree = con.define('disagrees', {
     primaryKey : true,
     autoIncrement : true
   },
-  topic_id: seq.INTEGER,
-  user_id	: seq.INTEGER,
-  created	: seq.STRING,
+  topic_id  : seq.INTEGER,
+  user_id   : seq.INTEGER,
+  created   : seq.STRING,
   created_ip: seq.STRING
 },
 {timestamps : false});

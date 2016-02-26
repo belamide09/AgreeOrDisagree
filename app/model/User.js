@@ -6,10 +6,10 @@ var con = new seq('nodepractice', 'root', '');
 exports.connection = con;
 
 User = con.define('users', {
-	id : {
-    type : seq.INTEGER,
-    primaryKey : true,
-    autoIncrement : true
+  id : {
+      type : seq.INTEGER,
+      primaryKey : true,
+      autoIncrement : true
   },
   email: seq.STRING,	
   first_name: seq.STRING,
@@ -24,8 +24,8 @@ User = con.define('users', {
 
 module.exports = (function(){
 
-	var X = {};
-	X.Table = User;
+  var X = {};
+  X.Table = User;
 
-	return X;
+  return X;
 })();
