@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 
 app.use(multer({ dest: './../app/webroot/images/'+uploadFolder,
   rename: function (fieldname, filename) {
-    var extension = filename.split();
+    var extension = filename.split('.');
     extension = filename[filename.length-1];
     var fileName = md5(new Date())'-'+md5(uploadFolder)+'-'socket.id+'.'+extension;
     return fileName;

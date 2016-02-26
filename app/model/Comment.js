@@ -64,12 +64,12 @@ module.exports = (function(){
 
   X.Update = function(data,callback){
   	Comment.Update(data,{
-  		where: {id: data.id}
+      where: {id: data.id}
   	}).done(function(result,err){
-  		callback({
-				error: err == 1?'Failed to update comment':0,
-				result: result
-			});
+      callback({
+      	error: err == 1?'Failed to update comment':0,
+      	result: result
+      });
   	});
   };
 
