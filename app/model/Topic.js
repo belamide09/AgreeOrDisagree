@@ -30,6 +30,7 @@ module.exports = (function(){
 	X.GetTopics = function(data,callback){
 		Topic.belongsTo(data.User,{foreignKey: 'user_id'});
     Topic.hasMany(data.Comment,{foreignKey: 'topic_id'});
+    data.Comment.belongsTo(data.User,{foreignKey: 'user_id'});
 		var options = {
 		  order : [
 				['created','desc']
@@ -43,7 +44,11 @@ module.exports = (function(){
       	limit: 5,
       	 order : [
 					['created','desc']
-			  ]
+			  ],
+			  include: [{
+	        model: data.User,
+	        required: true,
+	      }]
       }]
 		};
 		if(data.last_id != null){

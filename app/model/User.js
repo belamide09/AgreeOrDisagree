@@ -14,6 +14,7 @@ User = con.define('users', {
   email: seq.STRING,	
   first_name: seq.STRING,
   last_name: seq.STRING,
+  image: seq.STRING,
   created	: seq.STRING,
   created_ip: seq.STRING,
   modified	: seq.STRING,

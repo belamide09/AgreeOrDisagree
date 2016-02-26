@@ -13,10 +13,10 @@
 	socket.emit('get_comments',{topic_id:1,last_id:8});
 
 	socket.on('ReturnTopics',function(data){
-		// console.log(data);
+		console.log(data.results[0].comments[0]);
 	});
 	socket.on('ReturnComments',function(data){
-		comments = data.results;
+		// comments = data.results;
 	});
 
 	</script>
